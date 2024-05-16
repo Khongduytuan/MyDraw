@@ -9,16 +9,16 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.eagletech.mydraw.MainActivity.Companion.paintBrush
+import com.eagletech.mydraw.MainActivity.Companion.paint
 import com.eagletech.mydraw.MainActivity.Companion.path
 
 class DrawView : View {
-    var params: ViewGroup.LayoutParams? = null
+    var pr: ViewGroup.LayoutParams? = null
 
     companion object {
-        var pathList = ArrayList<Path>()
-        var colorList = ArrayList<Int>()
-        var currentBrush = Color.BLACK
+        var paths = ArrayList<Path>()
+        var colors = ArrayList<Int>()
+        var brush = Color.BLACK
     }
 
     constructor(context: Context) : this(context, null) {
@@ -31,38 +31,40 @@ class DrawView : View {
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context, attrs, defStyleAttr
+        context,
+        attrs,
+        defStyleAttr
     ) {
         init()
     }
 
     private fun init() {
-        paintBrush.isAntiAlias = true
-        paintBrush.color = currentBrush
-        paintBrush.style = Paint.Style.STROKE
-        paintBrush.strokeJoin = Paint.Join.ROUND
-        paintBrush.strokeWidth = 8f
-        params = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        paint.isAntiAlias = true
+        paint.color = brush
+        paint.style = Paint.Style.STROKE
+        paint.strokeJoin = Paint.Join.ROUND
+        paint.strokeWidth = 8f
+        pr = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var x = event.x
         var y = event.y
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
+        when(event.action){
+            MotionEvent.ACTION_DOWN ->{
                 path.moveTo(x, y)
                 return true
             }
 
-            MotionEvent.ACTION_MOVE -> {
+            MotionEvent.ACTION_MOVE ->{
                 path.lineTo(x, y)
-                pathList.add(path)
-                colorList.add(currentBrush)
+                paths.add(path)
+                colors.add(brush)
 
             }
-
             else -> return false
         }
         postInvalidate()
@@ -70,9 +72,9 @@ class DrawView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
-        for (i in pathList.indices) {
-            paintBrush.setColor(colorList[i])
-            canvas.drawPath(pathList[i], paintBrush)
+        for(i in paths.indices){
+            paint.setColor(colors[i])
+            canvas.drawPath(paths[i], paint)
             invalidate()
         }
     }
