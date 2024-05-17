@@ -1,6 +1,7 @@
 package com.eagletech.mydraw
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.eagletech.mydraw.MainActivity.Companion.paint
 import com.eagletech.mydraw.MainActivity.Companion.path
+import java.security.AccessController.checkPermission
 
 class DrawView : View {
     var pr: ViewGroup.LayoutParams? = null
